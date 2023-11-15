@@ -1,0 +1,267 @@
+-- 전시 카테고리 테이블
+drop sequence ecatseq;
+
+create sequence ecatseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+
+drop table exhibitionCtgr cascade constraints purge;
+create table exhibitionCtgr(
+	cnum 	number primary key,
+	ccode 	varchar2(20) not null,
+	cname 	varchar2(50) not null				
+);
+
+insert into exhibitionCtgr values(ecatseq.nextval,'permanent','상설전시');
+insert into exhibitionCtgr values(ecatseq.nextval,'special','특별전시');
+
+col cnum for 99
+col ccode for a10
+col cname for a12
+
+select * from exhibitionCtgr;
+commit;
+
+-- 전시 테이블
+drop sequence eseq;
+
+create sequence eseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+
+drop table exhibition cascade constraints purge;
+-- 번호,이름,카테고리,코드,이미지,장소,기간,부서,정보
+create table exhibition(
+	enum 		number primary key,
+	ename 		varchar2(100) not null,
+	ecategory  	varchar2(20) not null, 
+	ecode 		varchar2(20) not null,
+	eposter   	varchar2(30),
+	eplace varchar2(40),
+	eperiod varchar2(30),
+	edepart varchar2(20),
+	einfor varchar2(1000)	
+);
+
+insert into exhibition values(eseq.nextval,'2023년 계묘년 맞이 "토끼를 찾아라"','특별전시','find rabbit','special_exibition01.jpg','상설전시관 통일신라실','2022-12-27~2023-04-23','미술부',
+'국립중앙박물관은 2023년 계묘년癸卯年을 맞이하여 상설전시관 곳곳의 ‘토끼’ 관련 전시품을 소개합니다. 귀여운 모습의 토끼는 오늘날 우리 문화유산 곳곳에서 여러 모습으로 등장합니다. 토끼의 모습을 표현한 작품에는 나쁜 기운을 물리치고 좋은 기운을 불러들이고자 했던 선조들의 바람이 담겨있습니다. 다양한 모습의 토끼를 살펴보며 활기찬 계묘년이 되시기 바랍니다.');
+commit;
+
+-- 상품 카테고리 테이블
+drop sequence gcatseq;
+
+create sequence gcatseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+
+drop table goodsCtgr cascade constraints purge;
+create table goodsCtgr(
+	gcnum 	number primary key,
+	gccode 	varchar2(20) not null,
+	gcname 	varchar2(40) not null				
+);
+
+insert into goodsCtgr values(gcatseq.nextval,'stationary','문구/사무');
+insert into goodsCtgr values(gcatseq.nextval,'fashion','패션/생활');
+insert into goodsCtgr values(gcatseq.nextval,'craft','공예품');
+insert into goodsCtgr values(gcatseq.nextval,'museumSpecial','박물관 특화상품');
+insert into goodsCtgr values(gcatseq.nextval,'exhibitSpecial','특별전시 상품');
+
+col goodsCtgr gccode a20
+col goodsCtgr gcname a20
+
+select * from goodsCtgr;
+commit;
+
+-- 상품 테이블
+drop sequence gseq;
+
+create sequence gseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+
+drop table goods cascade constraints purge;
+-- 번호,이름,카테고리,코드,이미지,장소,기간,부서,정보
+create table goods(
+	gnum 		number primary key,
+	gname 		varchar2(100) not null,
+	gcategory  	varchar2(30) not null, 
+	gcode 		varchar2(20) not null,
+	gposter   	varchar2(30),
+	gprice varchar2(40) not null,
+	gqty number not null,
+	ginfor varchar2(1000)	
+);
+
+insert into goods values(gseq.nextval,'[근대 서화, 봄 새벽을 깨우다] 양장수첩 (도원행주)','특별전시 상품','spring','special_01.jpg','10,000',30,'아름다운 서화가 담긴 문화상품으로 전시의 여운을 간직 해 보세요.상품 크기 : 120*175mm,상품 속성 : 유선노트');
+commit;
+
+-- 회원 테이블
+drop sequence mseq ;
+
+create sequence mseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+ 
+drop table museum_members cascade constraints purge ;
+--이름 아이디 비밀번호 연락처(1,2,3) 우편번호 주소1 주소2 이메일
+create table museum_members(
+  no number not null,
+  name varchar2(30) not null,
+  id varchar2(12) primary key,
+  password varchar2(12) not null,
+  hp1 varchar2(10) not null,
+  hp2 varchar2(10) not null,
+  hp3 varchar2(10) not null,
+  smsagree varchar2(10),
+  zipcode varchar2(10) not null,
+  address1 varchar2(100) not null,
+  address2 varchar2(100) not null,
+  email varchar2(50) not null,
+  emailagree varchar2(10)
+);
+
+insert into museum_members(no, name, id, password) values(mseq.nextval, '관리자', 'admin', '1234');
+insert into museum_members values(mseq.nextval,'김가가','gaga1','gaga123','010','1234','5678','no',00231,'서울시 마포구 동교동','421-32','gaga@naver.com','no');
+insert into museum_members values(mseq.nextval,'김나나','nana1','nana123','010','1111','2222','yes',01234,'서울시 서대문구 연희동','35-32','nana@naver.com','no');
+insert into museum_members values(mseq.nextval,'김다다','dada1','dada123','010','3333','4444','yes',01234,'서울시 마포구 서교동','153-64','dada@naver.com','yes');
+
+commit;
+
+-- 예약 테이블
+drop sequence rseq ;
+
+create sequence rseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+
+drop table museum_reservation cascade constraints purge ;
+--프로그램명 관람일자 관람시간 관람인원(성인,초등학생,영유아) 예약자이름 연락처(hp1,hp2,hp3) 이메일
+create table museum_reservation(
+  rno number primary key,
+  rid varchar2(12),
+  rcategory varchar2(30) not null,
+  program varchar2(100) not null,
+  rdate varchar2(20) not null,
+  rtime varchar2(12) not null,
+  adult number not null,
+  junior number not null,
+  toddler number not null,
+  rname varchar2(20) not null,
+  hp1 varchar2(10) not null,
+  hp2 varchar2(10) not null,
+  hp3 varchar2(10) not null,
+  email varchar2(50) not null,
+  condition varchar2(30) not null,
+  FOREIGN KEY (rid) REFERENCES museum_members (id)
+);
+commit;
+
+--주문 테이블
+drop sequence oseq ;
+
+create sequence oseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+
+drop table museum_order cascade constraints purge ;
+--주문번호, 회원아이디, 상품번호, 수량, 전체가격, 배송메모, 결제수단, 상태
+create table museum_order(
+	orderId number primary key, -- 주문번호(orderseq)
+	memid varchar2(12), -- 회원아이디
+	gnum number not null, -- 상품번호
+	qty number not null, -- 수량
+	amount number, -- 전체가격
+	omemo varchar2(100), -- 배송메모
+	pay varchar2(30), -- 결제수단
+	condition varchar2(30), -- 상태
+	FOREIGN KEY (memid) REFERENCES museum_members (id)
+);
+commit;
+
+[조인]
+select m.name mname, m.id mid, p.pname, o.qty, o.amount 
+from (members m inner join orders o on m.no = o.memno) 
+inner join product p on o.pnum = p.pnum 
+where id = ?
+
+회원테이블 - 회원이름, 회원아이디
+상품테이블 - 상품이름
+주문테이블 - 회원번호, 상품번호, 수량, 전체가격
+
+상품이 여러개면?
+orderId	memno	gnum	qty	amount	pay
+1		김가가	연필		1	500		카드
+1		김가가	지우개	2	1,000	카드
+2		김가가	공책		1	1,000	현금
+2		김가가	볼펜		1	2,000	현금
+
+회원 이름 회원 아이디 구매 상품 구매 금액 결제 수단 결제상태
+select m.name, m.id, g.gname, o.qty, o.amount, o.pay, o.condition
+from (museum_members m inner join museum_order o on m.id = o.memid)
+inner join goods g on g.gnum = o.gnum
+where id=?
+
+--게시판 테이블
+drop sequence mboard_seq;
+create sequence mboard_seq
+  increment by 1
+  start with 1
+  minvalue 1
+  maxvalue 10000
+  nocache;
+ 
+drop table museum_board cascade constraints purge;
+create table museum_board( 
+	num number primary key,
+	writer varchar2(20) not null,
+	email varchar2(30),
+	subject varchar2(100) not null,
+	id varchar2(20),
+	passwd varchar2(20) not null,
+	reg_date date not null,
+	readcount int default 0,
+	ref number not null,
+	re_step number not null,
+	re_level number not null,
+	content varchar2(200) not null,
+	ip varchar2(15) not null,
+	FOREIGN KEY (id) REFERENCES museum_members (id)
+);
+commit;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
